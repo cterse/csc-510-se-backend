@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
 from scraper import Scraper
-from dbconnector import validate, signon
+from dbconnector import dbconnect
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
+db_cursor = dbconnect()
 
 @app.route('/scrape_content', methods=['POST'])
 def scrape_content_api():
@@ -19,17 +20,8 @@ def login_user_api():
         uname = request.form["username"]
         pasw = request.form["password"]
 
-        val = validate(uname, pasw)
+        resp = db_cursor.validate(uname, pasw)
 
-        if val:
-            resp = {
-                "validate": 1,
-                "uname": uname
-            }
-        else:
-            resp = {
-                "validate": 0
-            }
         return jsonify(resp)
 
 @app.route('/signup_user', methods=['POST'])
@@ -39,19 +31,8 @@ def signup_user_api():
         uname = request.form["username"]
         pasw = request.form["password"]
         
-        val = signon(uname, pasw)
+        resp = db_cursor.signon(uname, pasw)
                 
-        if val:
-            resp = {
-                "validate": 1,
-                "message": "Login Successful",
-                "uname": uname
-            }
-        else:
-            resp = {
-                "validate": 0,
-                "message": "Login Unsuccessful",
-            }
         return jsonify(resp)
     
 if __name__ == '__main__':
