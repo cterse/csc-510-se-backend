@@ -4,13 +4,16 @@ class dbconnect:
         import mysql.connector
 
         mydb = mysql.connector.connect(
-            host="localhost",
+            host="127.0.0.1",
             user="root",
             password="",
-            auth_plugin='mysql_native_password'
+            auth_plugin='mysql_native_password',
+            database="RESA"
         )
         
         cur = mydb.cursor()
+        
+        
 
     def validate(self, uname, passw):
         
@@ -44,5 +47,8 @@ class dbconnect:
         
         return resp
 
+    def __del__(): 
+        cur.close()
+        
 if __name__ == "__main__":
     db = dbconnect()
