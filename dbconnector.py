@@ -77,6 +77,20 @@ class dbconnect:
         
         self.mydb.commit()
         return 0
+    
+    def remove_user_recipe(self, user_email, recipe_id):
+        sql = " DELETE FROM USER_RECIPES WHERE RECIPE_ID = %s AND USER_ID = (SELECT USER_ID FROM USERS WHERE USER_EMAIL = %s) "
+        self.cur.execute(sql, (recipe_id, user_email))
+
+        self.mydb.commit()
+        return 0
+
+    def delete_recipe(self, recipe_id):
+        sql = "  DELETE FROM RECIPES WHERE RECIPE_ID = %s "
+        self.cur.execute(sql, recipe_id)
+
+        self.mydb.commit()
+        return 0
 
     def __del__(self): 
         self.cur.close()

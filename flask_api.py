@@ -68,5 +68,16 @@ def user_recipes_api():
         
         return jsonify(resp)
 
+@app.route('/delete_user_recipe', methods=['POST'])
+def delete_user_recipe_api():
+    if request.method == "POST":
+        
+        user_email = request.form["user_email"]
+        recipe_id = request.form["recipe_id"]
+        
+        resp = db_cursor.remove_user_recipe(user_email, recipe_id)
+        
+        return jsonify(resp)
+
 if __name__ == '__main__':
     app.run(debug=True)
