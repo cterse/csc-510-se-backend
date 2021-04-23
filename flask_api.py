@@ -44,6 +44,18 @@ def user_details_api():
         resp = db_cursor.get_user_details(uname)
                 
         return jsonify(resp)
+
+@app.route('/insert_recipe', methods=['POST'])
+def insert_recipe_api():
+    if request.method == "POST":
+        
+        title = request.form["title"]
+        ingredients = request.form["ingredients"]
+        process = request.form["process"]
+        
+        resp = db_cursor.insert_recipe(title, ingredients, process)
+        
+        return jsonify({'inserted_recipe_id':resp})
     
 if __name__ == '__main__':
     app.run(debug=True)
