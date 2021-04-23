@@ -35,13 +35,13 @@ def signup_user_api():
                 
         return jsonify(resp)
 
-@app.route('/get/user_details', methods=['POST'])
+@app.route('/get_user_details', methods=['POST'])
 def user_details_api():
     if request.method == "POST":
         
         uname = request.form["username"]
         
-        resp = db_cursor.user_details(uname)
+        resp = db_cursor.get_user_details(uname)
                 
         return jsonify(resp)
     

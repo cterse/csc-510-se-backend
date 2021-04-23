@@ -44,7 +44,7 @@ class dbconnect:
         
         return resp
 
-    def user_details(self, user_email):
+    def get_user_details(self, user_email):
         sql = " SELECT * FROM USERS WHERE USER_EMAIL = %s "
 
         self.cur.execute(sql, (user_email,))
