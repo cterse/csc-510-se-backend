@@ -2,18 +2,23 @@ import mysql.connector
 class dbconnect:
     
     def __init__(self):
+        
         self.mydb = mysql.connector.connect(
             host="127.0.0.1",
             user="root",
-            password="",
+            password="Muffliato",
             auth_plugin='mysql_native_password',
-            database="dbms"
+            database="RESA"
         )
         
         self.cur = self.mydb.cursor()
 
     def validate(self, uname, passw):
         
+        self.cur.execute(f"""SELECT USER_PASSWORD from USERS where USER_EMAIL = '{uname}'""")
+        pass_db = self.cur.fetchall()
+        
+        val = 1 if (pass_db[0][0] == passw) else 0
         if val:
             resp = {
                 "validate": 1,
@@ -30,6 +35,15 @@ class dbconnect:
 
     def signon(self, uname, passw):
         
+        
+        from datetime import datetime
+        date = datetime.now().date()
+        val = 0
+        print(date)
+        self.cur.execute(f"""INSERT INTO USERS VALUES (null, '{uname}','{passw}','{date}');""")
+        self.mydb.commit()
+        val = 1
+            
         if val:
             resp = {
                 "validate": 1,
@@ -39,7 +53,7 @@ class dbconnect:
         else:
             resp = {
                 "validate": 0,
-                "message": "Login Unsuccessful",
+                "message": "User already exists",
             }
         
         return resp
@@ -92,8 +106,9 @@ class dbconnect:
         self.mydb.commit()
         return 0
 
-    def __del__(self): 
-        self.cur.close()
+    def __exit__(self): 
+        self.mydb.close()
         
 if __name__ == "__main__":
-    db = dbconnect()
+    db = dbconnect().signon("g@h.com","pass123")
+    print(db)
