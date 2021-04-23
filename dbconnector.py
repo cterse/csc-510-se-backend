@@ -57,14 +57,27 @@ class dbconnect:
 
         return self.cur.fetchall()
 
+    def insert_user_recipe(self, user_email, title, ingredients, process):
+        inserted_recipe_id = self.insert_recipe(title, ingredients, process)
+        self.map_recipe_to_user(user_email, inserted_recipe_id)
+
+        return inserted_recipe_id
+
     def insert_recipe(self, title, ingredients, process):
         sql = " INSERT INTO RECIPES (RECIPE_ID, RECIPE_TITLE, RECIPE_INGREDIENTS, RECIPE_PROCEDURE, RECIPE_IMAGE ) \
             VALUES (null, %s, %s, %s, null) "
         self.cur.execute(sql, (title, ingredients, process))
+
         self.mydb.commit()
-        
         return self.cur.lastrowid
     
+    def map_recipe_to_user(self, user_email, recipe_id):
+        sql = " INSERT INTO USER_RECIPES (USER_ID, RECIPE_ID) VALUES ((SELECT USER_ID FROM USERS WHERE USER_EMAIL = %s), %s) "
+        self.cur.execute(sql, (user_email, recipe_id))
+        
+        self.mydb.commit()
+        return 0
+
     def __del__(self): 
         self.cur.close()
         
