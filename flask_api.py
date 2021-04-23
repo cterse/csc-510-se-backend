@@ -34,6 +34,16 @@ def signup_user_api():
         resp = db_cursor.signon(uname, pasw)
                 
         return jsonify(resp)
+
+@app.route('/get/user_details', methods=['POST'])
+def user_details_api():
+    if request.method == "POST":
+        
+        uname = request.form["username"]
+        
+        resp = db_cursor.user_details(uname)
+                
+        return jsonify(resp)
     
 if __name__ == '__main__':
     app.run(debug=True)
