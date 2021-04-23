@@ -56,6 +56,16 @@ def insert_recipe_api():
         resp = db_cursor.insert_recipe(title, ingredients, process)
         
         return jsonify({'inserted_recipe_id':resp})
-    
+
+@app.route('/get_user_recipes', methods=['POST'])
+def user_recipes_api():
+    if request.method == "POST":
+        
+        user_email = request.form["user_email"]
+        
+        resp = db_cursor.get_user_recipes(user_email)
+        
+        return jsonify(resp)
+
 if __name__ == '__main__':
     app.run(debug=True)

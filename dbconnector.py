@@ -51,8 +51,11 @@ class dbconnect:
         return self.cur.fetchall()
     
     def get_user_recipes(self, user_email):
-        sql = " SELECT * FROM RECIPES WHERE RECIPE_ID IN (SELECT RECIPE_ID FROM USER_RECIPES WHERE USER_EMAIL = %s ) "
-        return self.cur.execute(sql, (user_email))
+        sql = f" SELECT * FROM RECIPES WHERE RECIPE_ID IN (SELECT RECIPE_ID FROM USER_RECIPES WHERE USER_ID = \
+        (SELECT USER_ID FROM USERS WHERE USER_EMAIL = '{user_email}') ) "
+        self.cur.execute(sql)
+
+        return self.cur.fetchall()
 
     def insert_recipe(self, title, ingredients, process):
         sql = " INSERT INTO RECIPES (RECIPE_ID, RECIPE_TITLE, RECIPE_INGREDIENTS, RECIPE_PROCEDURE, RECIPE_IMAGE ) \
