@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from scraper import Scraper
 from dbconnector import dbconnect
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config["DEBUG"] = True
 
 db_cursor = dbconnect()

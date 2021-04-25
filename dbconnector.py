@@ -6,9 +6,9 @@ class dbconnect:
         self.mydb = mysql.connector.connect(
             host="127.0.0.1",
             user="root",
-            password="Muffliato",
-            auth_plugin='mysql_native_password',
-            database="RESA"
+            password="",
+            # auth_plugin='mysql_native_password',
+            database="dbms"
         )
         
         self.cur = self.mydb.cursor()
