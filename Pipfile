@@ -7,9 +7,8 @@ name = "pypi"
 requests = "*"
 Flask = "*"
 flask-cors = "*"
-mysql-connector = "*"
 recipe_scrapers = "*"
-
+mysql-connector-python = "*"
 
 [dev-packages]
 

@@ -7,7 +7,7 @@ class dbconnect:
             host="127.0.0.1",
             user="root",
             password="",
-            # auth_plugin='mysql_native_password',
+            auth_plugin='mysql_native_password',
             database="dbms"
         )
         
