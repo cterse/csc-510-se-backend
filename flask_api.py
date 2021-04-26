@@ -1,10 +1,20 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 from scraper import Scraper
 from dbconnector import dbconnect
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins="http://localhost:4200", allow_headers=[
+    "Content-Type", "Authorization", "Access-Control-Allow-Credentials","Access-Control-Allow-Origin"],
+    supports_credentials=True, intercept_exceptions=False)
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:4200')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    return response
+
 app.config["DEBUG"] = True
 
 db_cursor = dbconnect()
@@ -12,15 +22,16 @@ db_cursor = dbconnect()
 @app.route('/scrape_content', methods=['POST'])
 def scrape_content_api():
     if request.method == "POST":
-        scraped_content = Scraper(request.form["url"])
+        myurl = request.args.get('recipeurl')        
+        scraped_content = Scraper(myurl)
         return jsonify(scraped_content)
 
 @app.route('/login_user', methods=['POST'])
 def login_user_api():
     if request.method == "POST":
         
-        uname = request.form["username"]
-        pasw = request.form["password"]
+        uname = request.args.get('username')
+        pasw = request.args.get('password')
 
         resp = db_cursor.validate(uname, pasw)
 
@@ -30,8 +41,8 @@ def login_user_api():
 def signup_user_api():
     if request.method == "POST":
         
-        uname = request.form["username"]
-        pasw = request.form["password"]
+        uname = request.args.get('username')
+        pasw = request.args.get('password')
         
         resp = db_cursor.signon(uname, pasw)
                 
