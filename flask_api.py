@@ -92,5 +92,16 @@ def delete_user_recipe_api():
         
         return jsonify(resp)
 
+@app.route('/search_user_recipe', methods=['POST'])
+def search_user_recipes_api():
+    if request.method == "POST":
+        
+        user_email = request.form["user_email"]
+        recipe_title = request.form["recipe_title"]
+        
+        resp = db_cursor.search_user_recipes(user_email, recipe_title)
+        
+        return jsonify(resp)
+
 if __name__ == '__main__':
     app.run(debug=True)

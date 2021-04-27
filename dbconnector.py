@@ -105,6 +105,13 @@ class dbconnect:
 
         self.mydb.commit()
         return 0
+    
+    def search_user_recipes(self, user_email, recipe_title):
+        sql = f" SELECT * FROM RECIPES WHERE RECIPE_TITLE LIKE '%{recipe_title}%'  AND RECIPE_ID IN \
+        (SELECT RECIPE_ID FROM USER_RECIPES WHERE USER_EMAIL = {user_email}) "
+        self.cur.execute(sql)
+
+        return self.cur.fetchall()
 
     def __exit__(self): 
         self.mydb.close()
