@@ -6,9 +6,9 @@ class dbconnect:
         self.mydb = mysql.connector.connect(
             host="127.0.0.1",
             user="root",
-            password="",
+            password="Muffliato",
             auth_plugin='mysql_native_password',
-            database="dbms"
+            database="RESA"
         )
         
         self.cur = self.mydb.cursor()
@@ -77,6 +77,21 @@ class dbconnect:
 
         return inserted_recipe_id
 
+    def edit_user_recipe(self, recipe_id, title, ingredients, process):
+        sql = f" UPDATE RECIPES \
+            SET RECIPE_TITLE = '{title}', \
+            RECIPE_INGREDIENTS = '{ingredients}', \
+            RECIPE_PROCEDURE = '{process}' \
+            WHERE RECIPE_ID = {recipe_id}"
+
+        self.cur.execute(sql)
+        self.mydb.commit()
+        
+        sql = f"SELECT * FROM RECIPES WHERE RECIPE_ID = {recipe_id}"
+        self.cur.execute(sql)
+        
+        return self.cur.fetchall()
+    
     def insert_recipe(self, title, ingredients, process):
         sql = " INSERT INTO RECIPES (RECIPE_ID, RECIPE_TITLE, RECIPE_INGREDIENTS, RECIPE_PROCEDURE, RECIPE_IMAGE ) \
             VALUES (null, %s, %s, %s, null) "

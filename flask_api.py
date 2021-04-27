@@ -71,6 +71,19 @@ def insert_recipe_api():
         
         return jsonify({'inserted_recipe_id':resp})
 
+@app.route('/edit_user_recipe', methods=['POST'])
+def edit_recipe_api():
+    if request.method == "POST":
+        
+        recipe_id = request.form["recipe_id"]
+        title = request.form["title"]
+        ingredients = request.form["ingredients"]
+        process = request.form["process"]
+        
+        resp = db_cursor.edit_user_recipe(recipe_id, title, ingredients, process)
+        
+        return jsonify(resp)
+
 @app.route('/get_user_recipes', methods=['POST'])
 def user_recipes_api():
     if request.method == "POST":
